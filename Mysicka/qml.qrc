@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Page1.qml</file>
+        <file>Page1Form.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>images/baseline-add-24px.svg</file>
+        <file>images/baseline-arrow_back-24px.svg</file>
+        <file>images/baseline-delete_forever-24px.svg</file>
+        <file>images/baseline-next_arrow-24px.svg</file>
+        <file>images/baseline-prev_arrow-24px.svg</file>
+        <file>images/baseline-check-24px.svg</file>
+        <file>images/baseline-close-24px.svg</file>
+        <file>images/ic_launcher_mysicka_v5.svg</file>
+    </qresource>
+</RCC>
