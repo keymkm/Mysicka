@@ -157,6 +157,7 @@ ApplicationWindow {
                      switchNecessaryExpenditure.checked = l_costItem.NecessaryExpenditure
 
                      applyCostItemIndex= p_Index
+                     listViewCostTerms.currentIndex= -1
 
                  }
                  //Новая трата
@@ -233,7 +234,7 @@ ApplicationWindow {
              {
                  if (pageCostItem.visible)
                  {
-                     labelMainTitle.text= "Трата"
+                     labelMainTitle.text= "трата"
                      return
 
                  }//else
@@ -875,16 +876,22 @@ ApplicationWindow {
                          return
                      }//if
 
-                     dispalyText= page.textFieldCostItemName.displayText
+                     var l_GoToBeginnning= true
+                     if (dispalyText=== page.textFieldCostItemName.displayText)
+                         l_GoToBeginnning= false
+                     else
+                         dispalyText= page.textFieldCostItemName.displayText
 
                      var l_index= 0
                      for (l_i=0; l_i< modelCostItemNames.count; l_i++){
                          if (page.textFieldCostItemName.displayText.toUpperCase() === modelCostItemNames.get(l_i).name.slice(0, page.textFieldCostItemName.displayText.length).toUpperCase())
                          {
-                             page.listViewCostItemNames.currentIndex= 0
-
                              modelCostItemNames.move(l_i, l_index, 1)
                              modelCostItemNames.setProperty(l_i,"backgroundColor", page.secondaryColor)
+
+                             if(l_GoToBeginnning)
+                                 page.listViewCostItemNames.positionViewAtBeginning()
+
                              l_index= l_index+1
                          }//if
                          else
@@ -929,6 +936,7 @@ ApplicationWindow {
                      else
                          rectangleCostItemNames.height= modelCostItemNames.count*rowCostItemNamesHeight
 
+                     listViewCostItemNames.positionViewAtBeginning()
                      rectangleCostItemNames.visible= true
 
                      timerTextFieldCostItemName.dispalyText= textFieldCostItemName.displayText

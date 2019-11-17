@@ -114,7 +114,7 @@ Item {
                 id: labelMainTitle
                 color: "#ffffff"
                 text: "расходы"
-                anchors.verticalCenterOffset: 5
+                anchors.verticalCenterOffset: 9
                 font.bold: true
                 font.pointSize: 14
 
@@ -632,6 +632,7 @@ Item {
                                             width: 168
                                             height: 42
                                             text: qsTr("")
+                                            rightPadding: 13
                                             anchors.top: parent.top
                                             anchors.topMargin: 0
                                             font.pointSize: 11
@@ -939,9 +940,9 @@ Item {
             y: 323
             color: "#ffffff"
             text: qsTr("мышка-жадюшка")
+            anchors.verticalCenterOffset: 9
             font.underline: true
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: 5+imageSplashLogo.height/2
             visible: true
             anchors.horizontalCenter: parent.horizontalCenter
             font.pointSize: 16
