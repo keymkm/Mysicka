@@ -1208,7 +1208,10 @@ ApplicationWindow {
                  onTriggered:
                  {
                      if (page.rectangleSplashScreen.height===0)
+                     {
                          page.rectangleSplashScreen.height= page.height
+
+                     }
                      else
                          splashAnimation.start()
 
@@ -1223,6 +1226,16 @@ ApplicationWindow {
                      running: timerSplashScreen.stop()
                      duration: 1000
                      from: page.height; to: 0
+
+                     onStarted: {
+                         page.labelLogo.anchors.verticalCenterOffset= 50
+
+                     }
+
+                     onFinished: {
+                         page.labelLogo.anchors.verticalCenterOffset= 9
+
+                     }
 
                  }//NumberAnimation
 

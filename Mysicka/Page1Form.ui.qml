@@ -9,6 +9,8 @@ import QtGraphicalEffects 1.13
 Item {
     id: page
     height: 475
+    property alias imageSplashLogo: imageSplashLogo
+    property alias labelLogo: labelLogo
     property alias imageToolLogo: imageToolLogo
     property alias rectangleSplashScreen: rectangleSplashScreen
     property alias rectangleCostItemNames: rectangleCostItemNames
@@ -330,6 +332,7 @@ Item {
                                     horizontalAlignment: Text.AlignRight
                                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                                 }
+
                             }
 
                             Rectangle {
@@ -375,6 +378,7 @@ Item {
                                     icon.width: width/2
                                     icon.height: height/2
                                 }
+
                             }
 
                             ListView {
@@ -726,6 +730,7 @@ Item {
                                     border.width: 0
                                     border.color: primaryColor
                                 }
+
                             }
 
                             Rectangle {
@@ -914,6 +919,7 @@ Item {
 
 
             }
+
         }
     }
 
@@ -935,7 +941,7 @@ Item {
         }
 
         Label {
-            id: label5
+            id: labelLogo
             x: 168.891
             y: 323
             color: "#ffffff"
