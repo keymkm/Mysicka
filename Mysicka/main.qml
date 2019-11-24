@@ -224,6 +224,8 @@ ApplicationWindow {
                      swipeView.interactive= true
                  }//else
 
+                 labelCostItemNameWarning.visible= false
+
                  pageCostItem.visible= p_Show
                  setMainTitle ()
 
@@ -819,7 +821,7 @@ ApplicationWindow {
                      {
                          l_index= monthlyExpenditure.UpdateCostItem(applyCostItemIndex,
                                                                     Date.fromLocaleString (Qt.locale("ru_RU"), comboBoxCostItemDate.currentText + "." + labelCostItemDate.text, "dd ddd.MM.yyyy"),
-                                                                    textFieldCostItemName.text,
+                                                                    textFieldCostItemName.text.trim(),
                                                                     Number.fromLocaleString(Qt.locale("ru_RU"), labelCost.text),
                                                                     l_costTerms,
                                                                     switchNecessaryExpenditure.checked)
@@ -831,7 +833,7 @@ ApplicationWindow {
                      else
                      {
                          l_index= monthlyExpenditure.AddCostItem(Date.fromLocaleString (Qt.locale("ru_RU"), comboBoxCostItemDate.currentText + "." + labelCostItemDate.text, "dd ddd.MM.yyyy"),
-                                                                 textFieldCostItemName.text,
+                                                                 textFieldCostItemName.text.trim(),
                                                                  Number.fromLocaleString(Qt.locale("ru_RU"), labelCost.text),
                                                                  l_costTerms,
                                                                  switchNecessaryExpenditure.checked);
@@ -876,6 +878,8 @@ ApplicationWindow {
                          return
                      }//if
 
+                     page.labelCostItemNameWarning.visible= false
+
                      var l_GoToBeginnning= true
                      if (dispalyText=== page.textFieldCostItemName.displayText)
                          l_GoToBeginnning= false
@@ -884,7 +888,7 @@ ApplicationWindow {
 
                      var l_index= 0
                      for (l_i=0; l_i< modelCostItemNames.count; l_i++){
-                         if (page.textFieldCostItemName.displayText.toUpperCase() === modelCostItemNames.get(l_i).name.slice(0, page.textFieldCostItemName.displayText.length).toUpperCase())
+                         if (page.textFieldCostItemName.displayText.toUpperCase().trim() === modelCostItemNames.get(l_i).name.slice(0, page.textFieldCostItemName.displayText.trim().length).toUpperCase().trim())
                          {
                              modelCostItemNames.move(l_i, l_index, 1)
                              modelCostItemNames.setProperty(l_i,"backgroundColor", page.secondaryColor)
