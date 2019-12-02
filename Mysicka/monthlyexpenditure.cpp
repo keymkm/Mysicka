@@ -1,6 +1,8 @@
 #include "monthlyexpenditure.h"
 #include <QTextStream>
 #include <QStandardPaths>
+#include "mkmandroidutils.h"
+
 
 //MCCostItem
 //----------------------------------------------------
@@ -727,6 +729,8 @@ MCMonthlyExpenditure::MCMonthlyExpenditure(QObject *parent):
     m_Overspend= 0;
 
     //!!!Небезопстное место, надо подумать, как обрабатывать не возможность создать директорию
+    //Запрашиваем права на предоставления доступа к памяти устройства, т.к. начиная с Android 6, необходимо отдельно запрашивать права доступа
+    checkAndroidExternalStoragePermission();
     m_FilesDir= QDir (mc_AppWorkFilesDir);
     if (!m_FilesDir.exists())
     {

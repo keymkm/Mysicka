@@ -13,6 +13,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
+    mkmandroidutils.cpp \
     monthlyexpenditure.cpp \
     statistics.cpp
 
@@ -20,6 +21,8 @@ RESOURCES += qml.qrc
 
 #Подключаем svg в проект
 QT += svg
+#Подключаем дополнительные модули в проект
+QT += androidextras
 #Задаем название приложения
 TARGET = Mysicka
 
@@ -40,6 +43,7 @@ QMAKE_LINK += -nostdlib++
 
 HEADERS += \
     appconsts.h \
+    mkmandroidutils.h \
     monthlyexpenditure.h \
     statistics.h
 
