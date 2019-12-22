@@ -79,7 +79,7 @@ ApplicationWindow {
              */
              property int applyCostItemIndex: -1
 
-             //Флаг реэима удаоения объектов из списка затрат
+             //Флаг режима удаления объектов из списка затрат
              property bool listViewExpenditureDeleteMode: false
 
              //Цвета для графика
@@ -190,7 +190,17 @@ ApplicationWindow {
                  if (p_Active)
                      buttonAddCostItem.icon.source= iconDelete
                  else
+                 {
                      buttonAddCostItem.icon.source= iconAdd
+
+                     for (var l_i=0; l_i< modelExpenditure.count;l_i++)
+                         if (modelExpenditure.get(l_i).selected) {
+
+                             modelExpenditure.setProperty(l_i, "selected", false)
+                             modelExpenditure.setProperty(l_i, "backgroundColor", "#00000000")
+
+                         }//if
+                 }//else
 
 
                  listViewExpenditureDeleteMode= p_Active
@@ -231,6 +241,7 @@ ApplicationWindow {
 
              }//ShowPageCostItem
 
+
              //Установка текущего заголовка в зависимости от открытой формы
              function setMainTitle ()
              {
@@ -253,6 +264,37 @@ ApplicationWindow {
                  }//switch
 
              }//getMainTitle
+
+             //Обработка нажатия управляющей клавиши "назад"
+             focus: true//для того, чтобы перехватить нажатие, необходимо, чтобы был в фокусе хотя бы один элемент
+             Keys.onBackPressed: {
+
+                 //закрываем список выбора названий трат
+                 if (rectangleCostItemNames.visible)
+                 {
+                    rectangleCostItemNames.visible= false
+                    timerTextFieldCostItemName.stop()
+                    return
+                 }//if
+
+                 //Закрываем форму траты
+                 if (pageCostItem.visible)
+                 {
+                     showPageCostItem (false)
+                     return
+                 }//if
+
+                 //выходим из режима удаления
+                 if (listViewExpenditureDeleteMode)
+                 {
+                     setListViewExpenditureDeleteMode (false)
+                     return
+
+                 }//if
+
+                 close()
+
+             }//Keys.onBackPressed
 
              MCMonthlyExpenditure {
                  id: monthlyExpenditure
@@ -755,13 +797,13 @@ ApplicationWindow {
 
              buttonCancelCostItemSel {
                  onClicked: {
-                     for (var l_i=0; l_i< modelExpenditure.count;l_i++)
+                     /*for (var l_i=0; l_i< modelExpenditure.count;l_i++)
                          if (modelExpenditure.get(l_i).selected) {
 
                              modelExpenditure.setProperty(l_i, "selected", false)
                              modelExpenditure.setProperty(l_i, "backgroundColor", "#00000000")
 
-                         }//if
+                         }//if*/
 
                      setListViewExpenditureDeleteMode(false)
 
@@ -857,7 +899,6 @@ ApplicationWindow {
 
              }//comboBoxCostItenDate
 
-
              //Таймер для отслеживания изменения состояния ввода названия траты
              Timer {
                  id: timerTextFieldCostItemName
@@ -947,7 +988,6 @@ ApplicationWindow {
                      timerTextFieldCostItemName.start()
 
                  }//onPressed
-
 
 
              }//textFieldCostItemName
