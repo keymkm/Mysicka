@@ -525,6 +525,22 @@ void MCMonthlyExpenditure::deleteCostItem (const int p_Index)
 
 }//deleteCostItem
 
+void MCMonthlyExpenditure::deleteExpenditureName (const QString p_Name)
+{
+    for (int l_i= 0; l_i< m_ExpenditureNames.count(); l_i++)
+        if (p_Name.trimmed().toUpper() == m_ExpenditureNames.at(l_i).trimmed().toUpper())
+        {
+            m_ExpenditureNames.removeAt(l_i);
+            break;
+
+        }//if
+
+    SaveExpenditureNamesToFile ();
+
+    emit expenditureNamesUpdated(m_ExpenditureNames.join(';')+';');
+
+}//deleteExpenditureName
+
 void MCMonthlyExpenditure::AddExpenditureName (QString p_Name)
 {
     for (int l_i= 0; l_i< m_ExpenditureNames.count(); l_i++)
@@ -537,22 +553,9 @@ void MCMonthlyExpenditure::AddExpenditureName (QString p_Name)
 
     m_ExpenditureNames.append(p_Name);
 
-    QFile l_file(m_FilesDir.path()+"/"+mc_ExpenditureNamesFile);
-    if (!l_file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
+    SaveExpenditureNamesToFile ();
 
-    //!!! Более оптимально добавлять запись в начало файла, чем его полностью перезаписывать
-    QTextStream l_out(&l_file);
-
-    QString l_s= "";
-    for (int l_i= 0; l_i< m_ExpenditureNames.count(); l_i++)
-    {
-       l_out << m_ExpenditureNames.at(l_i) << "\n";
-       l_s= l_s + m_ExpenditureNames.at(l_i)+";";
-    }//for
-
-    if (l_s!="")
-        emit expenditureNamesUpdated(l_s);
+    emit expenditureNamesUpdated(m_ExpenditureNames.join(';')+';');
 
 }//AddExpenditureName
 
@@ -583,6 +586,27 @@ QString MCMonthlyExpenditure::LoadExpenditureNamesFromFile ()
     return "";
 
 }//LoadExpenditureNamesFromFile
+
+QString MCMonthlyExpenditure::SaveExpenditureNamesToFile ()
+{
+    QFile l_file(m_FilesDir.path()+"/"+mc_ExpenditureNamesFile);
+    if (!l_file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return "Ошибка чтения файла "+m_FilesDir.path()+"/"+mc_ExpenditureNamesFile;
+
+    //!!! Более оптимально добавлять запись в начало файла, чем его полностью перезаписывать
+    QTextStream l_out(&l_file);
+
+    QString l_s= "";
+    for (int l_i= 0; l_i< m_ExpenditureNames.count(); l_i++)
+    {
+       l_out << m_ExpenditureNames.at(l_i) << "\n";
+       l_s= l_s + m_ExpenditureNames.at(l_i)+";";
+    }//for
+
+    return "";
+
+}//SaveExpenditureNamesToFile
+
 
 QString MCMonthlyExpenditure::CalcStatParams ()
 {
@@ -663,7 +687,8 @@ QString MCMonthlyExpenditure::UpdateStatParams (QString p_Name, double p_Cost, b
         for (l_j= 0; l_j< m_StatParams.count()-l_i-3; l_j++)
             if (m_StatParams.at(l_j).split("=").at(1).toDouble()< m_StatParams.at(l_j+1).split("=").at(1).toDouble())
             {
-                m_StatParams.swap(l_j, l_j+1);
+
+                m_StatParams.swapItemsAt(l_j, l_j+1);
                 l_swap= 1;
 
             }//if

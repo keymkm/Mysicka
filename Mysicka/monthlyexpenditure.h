@@ -115,7 +115,7 @@ public:
     Q_PROPERTY (double CostItemsCount READ GetCostItemsCount)
 
     /**
-     * @brief Задает шод и месяц учета расходов
+     * @brief Установка года и месяца учета расходов
      * @param p_Year - год в формате yyyy
      * @param p_Month - месяц в формате mm
      */
@@ -151,6 +151,12 @@ public:
     Q_INVOKABLE void deleteCostItem (const int p_Index);
 
     /**
+     * @brief Удаление названия затраты из списка/словаря
+     * @param[in] p_Name - название затраты
+     */
+    Q_INVOKABLE void deleteExpenditureName (const QString p_Name);
+
+    /**
      * @brief Сохранение в файл всех данных о расходах за месяц
      * @return Если выполнено успешно, то "", иначе сообщение об ошибке
      */
@@ -169,7 +175,7 @@ public:
     Q_INVOKABLE MCCostItem* getCostItem (int p_Index);
 
     /**
-     * @brief Получение месяного бюджета (m_Budget)
+     * @brief Получение месячного бюджета (m_Budget)
      */
     double GetBudget ();
 
@@ -271,7 +277,7 @@ private:
     void ClearParams ();
 
     /**
-     * @brief Доюавление название затраты в список/словарь
+     * @brief Добавление названия затраты в список/словарь
      * @param[in] p_Name - название затраты
      */
     void AddExpenditureName (QString p_Name);
@@ -282,6 +288,12 @@ private:
      * @return Если выполнено успешно, то "", иначе сообщение об ошибке
      */
     QString LoadExpenditureNamesFromFile ();
+
+    /**
+     * @brief Сохранение названий трат в файл
+     * @return Если выполнено успешно, то "", иначе сообщение об ошибке
+     */
+    QString SaveExpenditureNamesToFile ();
 
     /**
      * @brief Загрузка статистики из файла

@@ -165,7 +165,6 @@ ApplicationWindow {
                  {
                      comboBoxCostItemDate.currentIndex= calcDate.getDate()-1
 
-                     //comboBoxCostItemName.currentIndex= -1
                      textFieldCostItemName.text= ""
 
                      textFieldCostTerm.clear()
@@ -232,6 +231,7 @@ ApplicationWindow {
                      rectangleMonth.height= 50
                      pageIndicator.visible= true
                      swipeView.interactive= true
+                     rectangleCostItemNames.visible= false
                  }//else
 
                  labelCostItemNameWarning.visible= false
@@ -697,7 +697,7 @@ ApplicationWindow {
 
                      }//Row
 
-                     //Задержка открытия карточки затраты, чтобы появилось выделение при клике
+                     //Задержка открытия карточки затраты, чтобы можно было увидеть выделение строки при клике
                      Timer {
                          id: timerOpenPageCostItem
                          interval: 77
@@ -797,13 +797,6 @@ ApplicationWindow {
 
              buttonCancelCostItemSel {
                  onClicked: {
-                     /*for (var l_i=0; l_i< modelExpenditure.count;l_i++)
-                         if (modelExpenditure.get(l_i).selected) {
-
-                             modelExpenditure.setProperty(l_i, "selected", false)
-                             modelExpenditure.setProperty(l_i, "backgroundColor", "#00000000")
-
-                         }//if*/
 
                      setListViewExpenditureDeleteMode(false)
 
@@ -955,12 +948,14 @@ ApplicationWindow {
              textFieldCostItemName {
 
                  onEditingFinished: {
+
                      rectangleCostItemNames.visible= false
                      timerTextFieldCostItemName.stop()
 
                  }//onEditingFinished
 
                  onFocusChanged: {
+
                      if (textFieldCostItemName.focus)
                          return
 
@@ -1198,6 +1193,8 @@ ApplicationWindow {
                                  opacity: 0.7
 
                                  Text {
+                                     id: textCostItemName
+
                                      text: name
                                      font.bold: false
                                      font.pointSize: 12
@@ -1206,21 +1203,66 @@ ApplicationWindow {
                                      elide: Text.ElideLeft
                                      wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 
-                                     width: parent.width
+                                     //width: parent.width
+                                     width: parent.width - parent.parent.spacing
+                                             - buttonDeleteCostItemName.width - 2
                                      anchors.verticalCenter: parent.verticalCenter
 
+
                                  } //Text
-                             }
+
+                                 RoundButton {
+                                     id: buttonDeleteCostItemName
+                                     width: 36
+                                     height: 36
+                                     font.pointSize: 9
+                                     anchors.right: parent.right
+                                     anchors.rightMargin: 0
+                                     anchors.verticalCenter: parent.verticalCenter
+
+                                     Material.background: page.secondaryColor
+                                     icon.source: page.iconClose
+                                     icon.width: width/2
+                                     icon.height: height/2
+
+                                     onClicked: {
+
+                                         if (page.textFieldCostItemName.text == modelCostItemNames.get(index).name)
+                                             page.textFieldCostItemName.text = ''
+
+                                         monthlyExpenditure.deleteExpenditureName(modelCostItemNames.get(index).name)
+
+                                         if (modelCostItemNames.count > 0)
+                                         {
+                                             page.rectangleCostItemNames.height= modelCostItemNames.count * page.rowCostItemNamesHeight
+                                             page.rectangleCostItemNames.visible= true
+
+                                         }//if
+
+                                         else
+                                             page.rectangleCostItemNames.visible= false
+
+                                     }//onClicked
+
+                                 } //Button
+
+                             }//Rectangle
 
                          }//Row
 
 
                          MouseArea {
-                             anchors.fill: parent
+                             //anchors.fill: parent
+
+                             width: textCostItemName.width
+                             height: parent.height
+
 
                              onClicked: {
                                  page.textFieldCostItemName.text= modelCostItemNames.get(index).name
                                  page.listViewCostItemNames.focus= true
+
+                                 page.rectangleCostItemNames.visible= false
 
                              }//onClicked
 
