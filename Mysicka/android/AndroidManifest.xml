@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <manifest package="ru.mkmsoftware.mysicka" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2" android:versionCode="0102001" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="Мышка-жадюшка" android:icon="@drawable/icon">
+    <application android:requestLegacyExternalStorage="true" android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="Мышка-жадюшка" android:icon="@drawable/icon">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|keyboard|keyboardHidden" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="Мышка-жадюшка" android:screenOrientation="portrait" android:theme="@style/AppTheme" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -89,4 +89,6 @@
 
 
 
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 </manifest>

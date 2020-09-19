@@ -470,6 +470,24 @@ ApplicationWindow {
 
                  }//onStatUpdated
 
+                 onErrorRaised: {
+
+                     switch (p_Type){
+                         case 0:
+                             rectangleError.color= page.errorColor
+                             break;
+
+                         case 1:
+                             rectangleError.color= page.secondaryColorDark
+                             break;
+                     }//switch
+
+                     labelError.text= p_Code + ": "+ p_Message
+                     rectangleError.visible= true
+                     timerShowError.start()
+
+                 }//onErrorRaised
+
              }//MonthlyExpenditure
 
              MCBudgetStats {
@@ -490,6 +508,56 @@ ApplicationWindow {
                  }//onUpdated
 
              }//MCBudgetStats
+
+             Timer {
+                 id: timerShowError
+                 interval: 3000
+
+                 onTriggered: {
+
+                     rectangleError.visible= false
+
+                 }//onTriggered
+
+             }//Timer
+
+             //Окно для вывода ошибок
+             Rectangle {
+                 id: rectangleError
+
+                 visible: false
+
+                 width: parent.width - 10
+                 height: parent.height/10
+                 radius: 10
+
+                 anchors.top: parent.top
+                 anchors.topMargin: 50
+                 anchors.left: parent.left
+                 anchors.leftMargin: 5
+
+                 color: page.errorColor
+
+                 Label {
+                     id: labelError
+                     color: "#ffffff"
+
+                     anchors.fill: parent
+                     anchors.margins: 5
+                     anchors.verticalCenter: parent.verticalCenter
+
+                     font.bold: true
+                     font.pointSize: 14
+
+                     horizontalAlignment: Text.AlignLeft
+                     verticalAlignment: Text.AlignVCenter
+                     elide: Text.ElideRight
+                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+
+                 }//Label
+
+
+             }//Rectangle
 
 
              labelCalendar {
@@ -1203,7 +1271,6 @@ ApplicationWindow {
                                      elide: Text.ElideLeft
                                      wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 
-                                     //width: parent.width
                                      width: parent.width - parent.parent.spacing
                                              - buttonDeleteCostItemName.width - 2
                                      anchors.verticalCenter: parent.verticalCenter
@@ -1232,16 +1299,6 @@ ApplicationWindow {
 
                                          monthlyExpenditure.deleteExpenditureName(modelCostItemNames.get(index).name)
 
-                                         if (modelCostItemNames.count > 0)
-                                         {
-                                             page.rectangleCostItemNames.height= modelCostItemNames.count * page.rowCostItemNamesHeight
-                                             page.rectangleCostItemNames.visible= true
-
-                                         }//if
-
-                                         else
-                                             page.rectangleCostItemNames.visible= false
-
                                      }//onClicked
 
                                  } //Button
@@ -1261,8 +1318,6 @@ ApplicationWindow {
                              onClicked: {
                                  page.textFieldCostItemName.text= modelCostItemNames.get(index).name
                                  page.listViewCostItemNames.focus= true
-
-                                 page.rectangleCostItemNames.visible= false
 
                              }//onClicked
 

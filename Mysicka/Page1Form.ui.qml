@@ -59,6 +59,8 @@ Item {
     readonly property string secondaryColorLight: "#ffd95b"
     //Цвет для предупреждения об угрозе (например для выделения необязательной траты в списках)
     readonly property string alertColor: "#ec407a"
+    //Цвет для выделения ошибки
+    readonly property string errorColor: "#d32f2f"
     //Цвет текста
     readonly property string contentTextColorDark: "#dd000000"
     //Цвет для выделения хорошего значения

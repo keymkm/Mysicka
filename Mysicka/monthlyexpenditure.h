@@ -234,6 +234,17 @@ signals:
       */
     void statUpdated(const QString &p_Names, const double &p_Total);
 
+    /**
+      * @brief Сигнал возникновения ошибки
+      * @param[in] p_Type Тип ошибки:
+      * 0 - ошибка (error)
+      * 1 - предупреждение (warning)
+      *
+      * @param[in] p_Code Код ошибки или функция, в которой произошла ошибка
+      * @param[in] p_Message Текст сообщения
+      */
+    void errorRaised (const int &p_Type, const QString &p_Code, const QString &p_Message);
+
 private:
     QString m_Year;/**< Год. Используется для поиска и определения периода учета расходов, сохранения и загрузки данных за этот период*/
 

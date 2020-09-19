@@ -145,11 +145,22 @@ void MCMonthlyExpenditure::UpdateTotal (double p_NewCost)
 QString  MCMonthlyExpenditure::SaveToFile ()
 {
     if (m_FilesDir.path()=="")
-        return "Не возможно создать папку для хранения данных";
+    {
+        QString l_err= "Невозможно создать папку для хранения данных '"+mc_AppWorkFilesDir+"'";
+        emit errorRaised(0, "SaveToFile", l_err);
+
+        return l_err;
+
+    }//if
 
     QFile l_file(m_FilesDir.path()+"/"+m_MonthlyExpenditureFileName);
     if (!l_file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return "Ошибка записи в файл";
+    {
+        QString l_err= "Ошибка записи в файл '"+m_FilesDir.path()+"/"+m_MonthlyExpenditureFileName+"'";
+        emit errorRaised(0, "SaveToFile", l_err);
+
+        return l_err;
+    }//if
 
     QTextStream l_out(&l_file);
 
@@ -201,7 +212,10 @@ QString MCMonthlyExpenditure::LoadFromFile ()
     QString l_ErrMsgBody= "";
 
     if (!l_file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        emit errorRaised(0, "LoadFromFile", l_ErrMsgTitle);
         return l_ErrMsgTitle;
+    }//if
 
     QTextStream l_ts (&l_file);
 
@@ -381,6 +395,8 @@ QString MCMonthlyExpenditure::LoadFromFile ()
 
     //Если была ошибка
     ClearParams();
+
+    emit errorRaised(0, "LoadFromFile", l_ErrMsgTitle + l_ErrMsgBody);
     return l_ErrMsgTitle + l_ErrMsgBody;
 
 }//LoadFromFile
@@ -570,7 +586,12 @@ QString MCMonthlyExpenditure::LoadExpenditureNamesFromFile ()
         return "";
 
     if (!l_file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return  "Ошибка чтения файла "+m_FilesDir.path()+"/"+mc_ExpenditureNamesFile;
+    {
+        QString l_err= "Ошибка чтения файла '"+m_FilesDir.path()+"/"+mc_ExpenditureNamesFile+"'";
+        emit errorRaised(0, "LoadExpenditureNamesFromFile", l_err);
+
+        return  l_err;
+    }//if
 
 
     QTextStream l_ts (&l_file);
@@ -591,7 +612,13 @@ QString MCMonthlyExpenditure::SaveExpenditureNamesToFile ()
 {
     QFile l_file(m_FilesDir.path()+"/"+mc_ExpenditureNamesFile);
     if (!l_file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return "Ошибка чтения файла "+m_FilesDir.path()+"/"+mc_ExpenditureNamesFile;
+    {
+        QString l_err= "Ошибка записи в файл '"+m_FilesDir.path()+"/"+mc_ExpenditureNamesFile+"'";
+        emit errorRaised(0, "SaveExpenditureNamesToFile", l_err);
+
+        return  l_err;
+
+    }//if
 
     //!!! Более оптимально добавлять запись в начало файла, чем его полностью перезаписывать
     QTextStream l_out(&l_file);
@@ -702,7 +729,12 @@ QString MCMonthlyExpenditure::UpdateStatParams (QString p_Name, double p_Cost, b
     {
         QFile l_file(m_FilesDir.path()+"/"+m_StatFileName);
         if (!l_file.open(QIODevice::WriteOnly | QIODevice::Text))
-            return "Ошибка записи в файл "+m_FilesDir.path()+"/"+m_StatFileName;
+        {
+            QString l_err= "Ошибка чтения файла '"+m_FilesDir.path()+"/"+m_StatFileName+"'";
+            emit errorRaised(0, "UpdateStatParams", l_err);
+
+            return  l_err;
+        }//if
 
         QTextStream l_out(&l_file);
         for (l_i= 0; l_i< m_StatParams.count(); l_i++)
@@ -728,7 +760,13 @@ QString MCMonthlyExpenditure::LoadStatFromFile ()
 
 
     if (!l_file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return  "Ошибка чтения файла "+m_FilesDir.path()+"/"+m_StatFileName;
+    {
+        QString l_err= "Ошибка чтения файла '"+m_FilesDir.path()+"/"+m_StatFileName+"'";
+        emit errorRaised(0, "LoadStatFromFile", l_err);
+
+        return  l_err;
+
+    }//if
 
     QTextStream l_ts (&l_file);
     m_StatParams.clear();
@@ -757,10 +795,12 @@ MCMonthlyExpenditure::MCMonthlyExpenditure(QObject *parent):
     //Запрашиваем права на предоставления доступа к памяти устройства, т.к. начиная с Android 6, необходимо отдельно запрашивать права доступа
     checkAndroidExternalStoragePermission();
     m_FilesDir= QDir (mc_AppWorkFilesDir);
+
     if (!m_FilesDir.exists())
     {
         if (!m_FilesDir.mkpath(m_FilesDir.absolutePath()))
             m_FilesDir.setPath("");
+
     }//if
     else
     {
