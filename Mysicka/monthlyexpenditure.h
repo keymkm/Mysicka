@@ -217,7 +217,7 @@ signals:
     void costItemsUpdated ();
 
     /**
-     * @brief Сигнал обновления стать расхода (m_CostItems->at(p_Index)).
+     * @brief Сигнал обновления статьи расхода (m_CostItems->at(p_Index)).
      */
     void costItemUpdated (const int &p_OldIndex, const int &p_NewIndex);
 
